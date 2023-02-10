@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="Desafío"></title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{webjars/bootstrap/5.2.0/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{css/desafio.css}" />
+
+
+</head>
+<body>
+	<th:block th:fragment="overlay">
+		<div id="overlay" style="display: none;">
+			<div class="spinner"></div>
+			<br /> Cargando...
+		</div>
+	</th:block>
+	<th:block th:fragment="navbar-index">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light sb-navbar">
+			<a class="navbar-brand"
+				style="border-right: 1px solid #d4dee7; padding: 0 0.5em;"
+				th:href="@{/}"> 
+			</a> 
+			</a>
+		</nav>
+	</th:block>
+	
+	
+	<div class="px-3 mx-auto text-center" id="multa">
+
+		<table class="table table-hover table-bordered table-sm">
+			<thead class="text-white bg-success">
+				<tr>
+					<th class="col">Address</th>
+					<th class="col">Owner</th>
+					<th class="col">Lon</th>
+					<th class="col">Lat</th>
+					<th class="col">MaxSpeed</th>
+					<th class="col">Speed</th>
+					<th class="col">Color</th>
+					<th class="col">Model</th>
+					<th class="col">Make</th>
+					<th class="col">Plate</th>
+					<th class="col">Upload</th>
+					<th class="col">STMP</th>
+					<th class="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody id="tablaTickets">
+				
+			</tbody>
+		</table>
+
+	</div>
+
+</body>
+
+</html>
