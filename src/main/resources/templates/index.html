@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8" />
-<title th:text="Desafío"></title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{webjars/bootstrap/5.2.0/css/bootstrap.min.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{css/desafio.css}" />
+	<meta charset="UTF-8" />
+	<title th:text="Desafío"></title>
+	<link rel="stylesheet" type="text/css" th:href="@{webjars/bootstrap/5.2.0/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/desafio.css}" />
 
 
 </head>
+
 <body>
 	<th:block th:fragment="overlay">
 		<div id="overlay" style="display: none;">
@@ -17,40 +18,85 @@
 		</div>
 	</th:block>
 	<th:block th:fragment="navbar-index">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light sb-navbar">
-			<a class="navbar-brand"
-				style="border-right: 1px solid #d4dee7; padding: 0 0.5em;"
-				th:href="@{/}"> 
-			</a> 
-			</a>
+		<nav class="navbar navbar-expand-lg bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Desafío</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+			</div>
 		</nav>
 	</th:block>
-	
-	
+
+
 	<div class="px-3 mx-auto text-center" id="multa">
 
 		<table class="table table-hover table-bordered table-sm">
 			<thead class="text-white bg-success">
 				<tr>
-					<th class="col">Address</th>
-					<th class="col">Owner</th>
-					<th class="col">Lon</th>
-					<th class="col">Lat</th>
-					<th class="col">MaxSpeed</th>
-					<th class="col">Speed</th>
-					<th class="col">Color</th>
-					<th class="col">Model</th>
-					<th class="col">Make</th>
-					<th class="col">Plate</th>
-					<th class="col">Upload</th>
-					<th class="col">STMP</th>
-					<th class="col">Actions</th>
+					<th class="col">Nombre</th>
+					<th class="col">Tipo(s)</th>
+					<th class="col">Peso</th>
+					<th class="col">Habilidades</th>
+					<th class="col">Foto</th>
+					<th class="col">Acciones</th>
 				</tr>
 			</thead>
-			<tbody id="tablaTickets">
-				
+			<tbody id="tablaPokemons">
+				<tr th:each="pokemon: ${data}">
+					<td th:text="${pokemon.nombre}"></td>
+					<td th:text="${pokemon.tipo}"></td>
+					<td th:text="${pokemon.peso}"></td>
+					<td th:text="${pokemon.habilidades}"></td>
+					<td><img th:src="${pokemon.foto}" /></td>
+					<td>
+						<a>Ver detalle</a>
+					</td>
+				</tr>
 			</tbody>
 		</table>
+
+		<div id="botonesPaginacion" class="col-md-8">
+
+			<nav aria-label="Pagination" th:if="${data != null and data.totalPages gt 0}">
+				<ul class="pagination">
+					<li class="page-item" th:classappend="${data.number eq 0} ? 'disabled'"><a class="page-link"
+							th:onclick="'obtenerFacturas(false,\'' + ${data.number lt 2 ? 1 : facturas.number} + '\');'"
+							aria-label="Anterior" title="Anterior" rel="tooltip"> <span
+								aria-hidden="true">Anterior</span> <span class="sr-only">Anterior</span>
+						</a></li>
+					<li class="page-item" th:classappend="${i eq data.number + 1} ? 'active'"
+						th:each="i : ${#numbers.sequence(data.number + 1, data.totalPages > 10 + data.totalPages ? data.number + 10 : data.totalPages, 1)}">
+						<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${i} + '\');'" th:text="${i}"
+							th:title="${'Page '+ i}" rel="tooltip"></a>
+					</li>
+					<li class="page-item disabled" th:if="${data.number + 10 < data.totalPages}">
+						<a class="page-link svg-icon" href="#"> <span data-feather="more-horizontal" width="20"
+								height="20"></span>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${data.number + 1 eq data.totalPages} ? 'disabled'">
+						<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${data.number + 2} + '\');'"
+							aria-label="Siguiente" title="Siguiente" rel="tooltip"> <span
+								aria-hidden="true">Siguiente</span> <span class="sr-only">Siguiente</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+	<div th:if="${facturas != null and not (facturas.hasContent())}"
+		class="alert alert-info alert-dismissible fade show failure" role="alert">
+		[[#{message.resultsNotFound}]]
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
 
 	</div>
 

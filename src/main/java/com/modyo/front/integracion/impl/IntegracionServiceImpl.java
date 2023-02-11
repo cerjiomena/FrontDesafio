@@ -1,7 +1,8 @@
-package com.modyo.front.service.impl;
+package com.modyo.front.integracion.impl;
 
 import java.time.Duration;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.modyo.front.error.AplicacionExcepcion;
+import com.modyo.front.integracion.IntegracionService;
 import com.modyo.front.modelo.Pokemons;
-import com.modyo.front.service.IntegracionService;
 import com.modyo.front.util.MensajeError;
 
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -59,6 +60,13 @@ public class IntegracionServiceImpl implements IntegracionService {
 								messageSource.getMessage(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION.getLLaveMensaje(),
 										null, LocaleContextHolder.getLocale())))
 				.block();
+		
+		//log.debug(pokemons);
+		
+		///JSONObject json = new JSONObject(pokemons);
+		
+		//log.debug("" + json.getInt("numberOfElements"));
+		
 
 		return pokemons;
 	}

@@ -4,8 +4,14 @@ import java.util.List;
 
 import lombok.Data;
 
-@Data
-public class Pokemons {
+@Datapublic class Pokemons {
 
 	private List<Pokemon> pokemons;
+	
+	private String timestap;
+	private int numberOfElements;
+	private int totalPages;
+	private int currentPage;
+	private int status;
+	private int totalElements;
 }

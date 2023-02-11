@@ -27,6 +27,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	// https://mvnrepository.com/artifact/org.webjars/bootstrap
     implementation group: 'org.webjars', name: 'bootstrap', version: '5.2.0'
+    
+   	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+   	
+   		
+	// https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+	implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
 	
 }
 

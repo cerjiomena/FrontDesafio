@@ -1,4 +1,4 @@
-package com.modyo.front.service;
+package com.modyo.front.integracion;
 
 import com.modyo.front.modelo.Pokemons;
 

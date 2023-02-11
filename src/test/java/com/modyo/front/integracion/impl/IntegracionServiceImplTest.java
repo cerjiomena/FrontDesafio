@@ -1,13 +1,15 @@
-package com.modyo.front.service.impl;
+package com.modyo.front.integracion.impl;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.modyo.front.FrontDesafioApplication;
+import com.modyo.front.integracion.IntegracionService;
 import com.modyo.front.modelo.Pokemon;
 import com.modyo.front.modelo.Pokemons;
-import com.modyo.front.service.IntegracionService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,11 +26,7 @@ public class IntegracionServiceImplTest {
 		
 		Pokemons pokemons = integracionService.obtenerListadoPokemons("1", "3");
 		
-		for (Pokemon pokemon: pokemons.getPokemons()) {
-			
-			log.debug(pokemon.toString());
-		}
-		
+		assertTrue(pokemons.getPokemons().size() > 0);
 		
 	}
 
