@@ -19,11 +19,11 @@ public class PokemonServiceImpl implements PokemonService {
 	private IntegracionService integracionService;
 
 	@Override
-	public Page<Pokemon> obtenerPaginaPokemons() {
+	public Page<Pokemon> obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina) {
 		
 		Page<Pokemon> pages = null;
 		
-		Pokemons pokemons = integracionService.obtenerListadoPokemons("1", "3");
+		Pokemons pokemons = integracionService.obtenerListadoPokemons(pagina, numeroElementosPorPagina);
 
 		pages = new PageImpl<Pokemon>(pokemons.getPokemons(),  PageRequest.of(pokemons.getCurrentPage(), pokemons.getNumberOfElements()), Long.valueOf(pokemons.getTotalElements()).longValue());
 		

@@ -6,5 +6,5 @@ import com.modyo.front.modelo.Pokemon;
 
 public interface PokemonService {
 	
-	Page<Pokemon> obtenerPaginaPokemons();
+	Page<Pokemon> obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina);
 }

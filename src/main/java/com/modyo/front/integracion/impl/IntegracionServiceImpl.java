@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.modyo.front.error.AplicacionExcepcion;
 import com.modyo.front.integracion.IntegracionService;
+import com.modyo.front.modelo.Pokemon;
 import com.modyo.front.modelo.Pokemons;
 import com.modyo.front.util.MensajeError;
 
@@ -45,7 +46,7 @@ public class IntegracionServiceImpl implements IntegracionService {
 	private MessageSource messageSource;
 
 	@Override
-	public Pokemons obtenerListadoPokemons(String pagina, String numeroElementosPorPagina) {
+	public Pokemons obtenerListadoPokemons(int pagina, int numeroElementosPorPagina) {
 
 		if (log.isDebugEnabled())
 			log.debug(">> Entrando a IntegracionServiceImpl.obtenerListadoPokemons() <<");
@@ -61,7 +62,11 @@ public class IntegracionServiceImpl implements IntegracionService {
 										null, LocaleContextHolder.getLocale())))
 				.block();
 		
-		//log.debug(pokemons);
+		
+		
+		for (Pokemon pokemon : pokemons.getPokemons()) {
+			log.debug(pokemon.toString());
+		}
 		
 		///JSONObject json = new JSONObject(pokemons);
 		

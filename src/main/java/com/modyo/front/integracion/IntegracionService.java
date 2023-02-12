@@ -4,7 +4,7 @@ import com.modyo.front.modelo.Pokemons;
 
 public interface IntegracionService {
 	
-	Pokemons obtenerListadoPokemons(String pagina, String numeroElementosPorPagina);
+	Pokemons obtenerListadoPokemons(int pagina, int numeroElementosPorPagina);
 
 
 }

@@ -24,7 +24,7 @@ public class IntegracionServiceImplTest {
 	public void debeObtenerListadoPokemons() {
 		log.debug("Entrando a IntegracionServiceImplTest.debeObtenerListadoPokemons");
 		
-		Pokemons pokemons = integracionService.obtenerListadoPokemons("1", "3");
+		Pokemons pokemons = integracionService.obtenerListadoPokemons(1, 3);
 		
 		assertTrue(pokemons.getPokemons().size() > 0);
 		

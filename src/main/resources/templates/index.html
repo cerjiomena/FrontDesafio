@@ -32,64 +32,81 @@
 	</th:block>
 
 
-	<div class="px-3 mx-auto text-center" id="multa">
 
-		<table class="table table-hover table-bordered table-sm">
-			<thead class="text-white bg-success">
-				<tr>
-					<th class="col">Nombre</th>
-					<th class="col">Tipo(s)</th>
-					<th class="col">Peso</th>
-					<th class="col">Habilidades</th>
-					<th class="col">Foto</th>
-					<th class="col">Acciones</th>
-				</tr>
-			</thead>
-			<tbody id="tablaPokemons">
-				<tr th:each="pokemon: ${data}">
-					<td th:text="${pokemon.nombre}"></td>
-					<td th:text="${pokemon.tipo}"></td>
-					<td th:text="${pokemon.peso}"></td>
-					<td th:text="${pokemon.habilidades}"></td>
-					<td><img th:src="${pokemon.foto}" /></td>
-					<td>
-						<a>Ver detalle</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="px-3 mx-auto text-center" id="desafio">
 
-		<div id="botonesPaginacion" class="col-md-8">
+		<div class="col-md-3 input-group mt-2">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="pageSize">Registros por página:</label>
+			</div>
+			<select form="searchForm" name="size" th:value="${pageSize}" onchange="changePageSize()" class="size-select"
+				id="pageSize">
+				<option th:each="s : ${ {3, 6, 9} }" th:value="${s}" th:text="${s}" th:selected="${s == pageSize}">
+				</option>
+			</select>
+		</div>
+		<form th:action="@{'/'}" id="searchForm" method="post">
+		</form>
 
-			<nav aria-label="Pagination" th:if="${data != null and data.totalPages gt 0}">
-				<ul class="pagination">
-					<li class="page-item" th:classappend="${data.number eq 0} ? 'disabled'"><a class="page-link"
-							th:onclick="'obtenerFacturas(false,\'' + ${data.number lt 2 ? 1 : facturas.number} + '\');'"
-							aria-label="Anterior" title="Anterior" rel="tooltip"> <span
-								aria-hidden="true">Anterior</span> <span class="sr-only">Anterior</span>
-						</a></li>
-					<li class="page-item" th:classappend="${i eq data.number + 1} ? 'active'"
-						th:each="i : ${#numbers.sequence(data.number + 1, data.totalPages > 10 + data.totalPages ? data.number + 10 : data.totalPages, 1)}">
-						<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${i} + '\');'" th:text="${i}"
-							th:title="${'Page '+ i}" rel="tooltip"></a>
-					</li>
-					<li class="page-item disabled" th:if="${data.number + 10 < data.totalPages}">
-						<a class="page-link svg-icon" href="#"> <span data-feather="more-horizontal" width="20"
-								height="20"></span>
-						</a>
-					</li>
-					<li class="page-item" th:classappend="${data.number + 1 eq data.totalPages} ? 'disabled'">
-						<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${data.number + 2} + '\');'"
-							aria-label="Siguiente" title="Siguiente" rel="tooltip"> <span
-								aria-hidden="true">Siguiente</span> <span class="sr-only">Siguiente</span>
-						</a>
-					</li>
-				</ul>
-			</nav>
+		<div id="pokemonsLista">
+			<table class="table table-hover table-bordered table-sm">
+				<thead class="text-white bg-success">
+					<tr>
+						<th class="col">Nombre</th>
+						<th class="col">Tipo(s)</th>
+						<th class="col">Peso</th>
+						<th class="col">Habilidades</th>
+						<th class="col">Foto</th>
+						<th class="col">Acciones</th>
+					</tr>
+				</thead>
+				<tbody id="tablaPokemons">
+					<tr th:each="pokemon: ${data}">
+						<td th:text="${pokemon.nombre}"></td>
+						<td th:text="${pokemon.tipo}"></td>
+						<td th:text="${pokemon.peso}"></td>
+						<td th:text="${pokemon.habilidades}"></td>
+						<td><img th:src="${pokemon.foto}" /></td>
+						<td>
+							<a>Ver detalle</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div id="botonesPaginacion" class="col-md-8">
+
+				<nav aria-label="Pagination" th:if="${data != null and data.totalPages gt 0}">
+					<ul class="pagination">
+						<li class="page-item" th:classappend="${data.number eq 0} ? 'disabled'">
+							<a class="page-link" th:href="@{/(page=${data.number lt 2 ? 1 : data.number},size=3)}"
+								aria-label="Anterior" title="Anterior" rel="tooltip"> <span
+									aria-hidden="true">Anterior</span>
+							</a>
+						</li>
+						<li class="page-item" th:classappend="${i eq data.number + 1} ? 'active'"
+							th:each="i : ${#numbers.sequence(data.number + 1, data.totalPages > 10 + data.totalPages ? data.number + 10 : data.totalPages, 1)}">
+							<a class="page-link" th:href="@{/(page=${i},size=3)}" th:text="${i}"
+								th:title="${'Page '+ i}" rel="tooltip"></a>
+						</li>
+						<li class="page-item disabled" th:if="${data.number + 10 < data.totalPages}">
+							<a class="page-link svg-icon" href="#"> <span data-feather="more-horizontal" width="20"
+									height="20"></span>
+							</a>
+						</li>
+						<li class="page-item" th:classappend="${data.number + 1 eq data.totalPages} ? 'disabled'">
+							<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${data.number + 2} + '\');'"
+								aria-label="Siguiente" title="Siguiente" rel="tooltip"> <span
+									aria-hidden="true">Siguiente</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 
 	</div>
-	<div th:if="${facturas != null and not (facturas.hasContent())}"
+	<div th:if="${data != null and not (data.hasContent())}"
 		class="alert alert-info alert-dismissible fade show failure" role="alert">
 		[[#{message.resultsNotFound}]]
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -99,6 +116,24 @@
 
 
 	</div>
+
+	<script src="webjars/jquery/3.3.1-2/jquery.min.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+
+		function changePageSize() {
+
+			$.post("/", $("#searchForm").serialize(), function (fragment) {
+
+				$("#pokemonsLista").replaceWith(fragment);
+
+			});
+
+
+		}
+
+	</script>
+
 
 </body>
 
