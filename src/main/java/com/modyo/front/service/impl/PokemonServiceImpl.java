@@ -1,14 +1,9 @@
 package com.modyo.front.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.modyo.front.dto.PokemonDTO;
 import com.modyo.front.integracion.IntegracionService;
-import com.modyo.front.modelo.Pokemon;
 import com.modyo.front.modelo.Pokemons;
 import com.modyo.front.service.PokemonService;
 
@@ -19,16 +14,9 @@ public class PokemonServiceImpl implements PokemonService {
 	private IntegracionService integracionService;
 
 	@Override
-	public Page<Pokemon> obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina) {
+	public Pokemons obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina) {
 		
-		Page<Pokemon> pages = null;
-		
-		Pokemons pokemons = integracionService.obtenerListadoPokemons(pagina, numeroElementosPorPagina);
-
-		pages = new PageImpl<Pokemon>(pokemons.getPokemons(),  PageRequest.of(pokemons.getCurrentPage(), pokemons.getNumberOfElements()), Long.valueOf(pokemons.getTotalElements()).longValue());
-		
-		
-		return pages;
+		return integracionService.obtenerListadoPokemons(pagina, numeroElementosPorPagina);
 	}
 
 }

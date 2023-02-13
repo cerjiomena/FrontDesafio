@@ -22,7 +22,7 @@ import io.netty.handler.timeout.WriteTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
+ * Clase de integracion con el servicio backend de los pokemons
  * @author Sergio Mena
  *
  */
@@ -61,16 +61,6 @@ public class IntegracionServiceImpl implements IntegracionService {
 								messageSource.getMessage(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION.getLLaveMensaje(),
 										null, LocaleContextHolder.getLocale())))
 				.block();
-		
-		
-		
-		for (Pokemon pokemon : pokemons.getPokemons()) {
-			log.debug(pokemon.toString());
-		}
-		
-		///JSONObject json = new JSONObject(pokemons);
-		
-		//log.debug("" + json.getInt("numberOfElements"));
 		
 
 		return pokemons;

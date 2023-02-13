@@ -12,6 +12,20 @@ public class Constantes {
     public static final String TOTAL_ELEMENTS = "totalElements";
     public static final String TOTAL_PAGES = "totalPages";
     public static final String NUMBER_OF_ELEMENTS = "numberOfElements";
+    /**
+     * Constante para los datos de los pokemones
+     */
+    public static final String DATA = "data";
+    /**
+     * Constantes de los numeros de pagina en el paginado
+     */
+    public static final String PAGES_NUMBERS = "pageNumbers";
+    /**
+     * Constante para los registros por pagina
+     */
+    public static final String PAGE_SIZE = "pageSize";
+    
+    
     
     
 

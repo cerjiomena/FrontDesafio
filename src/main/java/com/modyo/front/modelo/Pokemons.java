@@ -14,4 +14,9 @@ import lombok.Data;
 	private int currentPage;
 	private int status;
 	private int totalElements;
+	private int number;
+	
+	public boolean hasContent() {
+		return pokemons.size() > 0 ? true : false;
+	}
 }

@@ -3,8 +3,9 @@ package com.modyo.front.service;
 import org.springframework.data.domain.Page;
 
 import com.modyo.front.modelo.Pokemon;
+import com.modyo.front.modelo.Pokemons;
 
 public interface PokemonService {
 	
-	Page<Pokemon> obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina);
+	Pokemons obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina);
 }
