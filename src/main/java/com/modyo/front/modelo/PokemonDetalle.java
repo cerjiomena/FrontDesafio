@@ -7,5 +7,7 @@ public class PokemonDetalle {
 	
 	private String timestamp;
 	private DetalleDescripcionEvolucion detail;
+	private String message;
+	private int status;
 
 }

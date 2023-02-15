@@ -18,6 +18,8 @@ import com.modyo.front.modelo.Pokemons;
 import com.modyo.front.service.PokemonService;
 import com.modyo.front.util.Constantes;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 public class PokemonController {
 	
@@ -128,7 +130,13 @@ public class PokemonController {
 		
 		try {
 			detalle = pokemonService.obtenerDetallePokemon(url.get());
-			model.addAttribute(Constantes.DETAIL, detalle);
+			if(detalle != null) {
+				if( detalle.getDetail() != null) {
+					model.addAttribute(Constantes.DETAIL, detalle);
+				} else if(detalle.getStatus() == Constantes.ERROR_VALIDATION) {
+					model.addAttribute(Constantes.MESSAGE_ERROR_DETAIL, detalle.getMessage());
+				}	
+			}
 			
 		} catch (AplicacionExcepcion e) {
 			
