@@ -18,8 +18,6 @@ import com.modyo.front.modelo.Pokemons;
 import com.modyo.front.service.PokemonService;
 import com.modyo.front.util.Constantes;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
 public class PokemonController {
 	
