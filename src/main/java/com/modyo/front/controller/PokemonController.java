@@ -27,7 +27,14 @@ public class PokemonController {
 	@Autowired
 	private MessageSource messages;
 	
-	 
+	/**
+	 * Metodo utilizado para obtener los pokemons desde el inicio
+	 * @param request peticion
+	 * @param model
+	 * @param page numero de pagina
+	 * @param size registros por pagina
+	 * @return html completo (el render)
+	 */
 	@GetMapping("/")
 	public String obtenerPokemons(WebRequest request, Model model, @RequestParam("page") Optional<Integer> page,
 			@RequestParam("size") Optional<Integer> size) {
@@ -65,6 +72,13 @@ public class PokemonController {
 		return "index.html";
 	}
 	
+	/**
+	 * Metodo utilizado para obtener los pokemons cuando se hace el cambio de paginacion
+	 * @param request peticion
+	 * @param model 
+	 * @param size registros por pagina
+	 * @return cadena que contiene el fragmento html
+	 */
 	@PostMapping("/")
 	public String obtenerPokemons(WebRequest request, Model model, @RequestParam("size") Optional<Integer> size) {
 		
@@ -99,6 +113,13 @@ public class PokemonController {
 		
 	}
 	
+	/**
+	 * Metodo utilizado para obtener el detalle del pokemon
+	 * @param request peticion
+	 * @param model 
+	 * @param url direccion donde se encuentra el detalle
+	 * @return fragmento de html con la información deseada
+	 */
 	@PostMapping("/obtenerDetalle")
 	public String obtenerDetallePokemon(WebRequest request, Model model, @RequestParam("urlDetalle") Optional<String> url) {
 		
@@ -107,15 +128,15 @@ public class PokemonController {
 		
 		try {
 			detalle = pokemonService.obtenerDetallePokemon(url.get());
-			model.addAttribute(Constantes.DATA, detalle);
+			model.addAttribute(Constantes.DETAIL, detalle);
 			
 		} catch (AplicacionExcepcion e) {
 			
 			if (e.getCodigoError() != null) {
-				model.addAttribute(Constantes.MESSAGE_ERROR,
+				model.addAttribute(Constantes.MESSAGE_ERROR_DETAIL,
 						messages.getMessage(e.getCodigoError().getLLaveMensaje(), null, local));
 			} else {
-				model.addAttribute(Constantes.MESSAGE_ERROR, e.getMessage());
+				model.addAttribute(Constantes.MESSAGE_ERROR_DETAIL, e.getMessage());
 			}
 		}
 		

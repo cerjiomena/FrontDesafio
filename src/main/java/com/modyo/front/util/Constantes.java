@@ -30,6 +30,16 @@ public class Constantes {
      */
     public static final String MESSAGE_ERROR = "error";
     
+    /**
+     * Constante para los datos de los pokemones
+     */
+    public static final String DETAIL = "detail";
+    
+    /**
+     * Constante para los los mensajes de error en detalle 
+     */
+    public static final String MESSAGE_ERROR_DETAIL = "errorDetail";
+    
     
 
 }

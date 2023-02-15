@@ -32,7 +32,6 @@
 	</th:block>
 
 
-
 	<div class="px-3 mx-auto text-center" id="desafio">
 
 		<div class="col-md-3 input-group mt-2">
@@ -49,6 +48,14 @@
 		</form>
 
 		<div id="pokemonsLista">
+			<div class="alert alert-danger alert-dismissible fade show"
+				role="alert" th:if="${error}">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong th:text="${error}"></strong>
+    		</div>
 			<table class="table table-hover table-bordered table-sm">
 				<thead class="text-white bg-success">
 					<tr>
@@ -68,7 +75,7 @@
 						<td th:text="${pokemon.habilidades}"></td>
 						<td><img th:src="${pokemon.foto}" /></td>
 						<td>
-							<a th:data-url="${pokemon.urlDetalle}" th:data-foto="${pokemon.foto}" th:onclick="obtenerDetalle(this)" style="cursor: pointer;">Ver detalle</a>
+							<a th:data-url="${pokemon.urlDetalle}" th:data-foto="${pokemon.foto}" th:data-name="${pokemon.nombre}" th:onclick="obtenerDetalle(this)" style="cursor: pointer;">Ver detalle</a>
 						</td>
 					</tr>
 				</tbody>
@@ -96,7 +103,7 @@
 							</a>
 						</li>
 						<li class="page-item" th:classappend="${data.number + 1 eq data.totalPages} ? 'disabled'">
-							<a class="page-link" th:onclick="'obtenerFacturas(false,\'' + ${data.number + 2} + '\');'"
+							<a class="page-link" th:href="@{/(page=${data.number +2 },size=${pageSize})}"
 								aria-label="Siguiente" title="Siguiente" rel="tooltip"> <span
 									aria-hidden="true">Siguiente</span>
 							</a>
@@ -121,37 +128,35 @@
 	
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-xl">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalle Pokemon</h1>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        	 <div class="container-fluid">
-				    <div class="row">
-				      <div class="col-md-4" id="foto">.col-md-4</div>
-				      <div class="col-md-4 ms-auto">.col-md-4 .ms-auto</div>
+	        	 <div class="container-fluid" id="pokemonDetalle">
+	        	 	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorDetail}">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong th:text="${errorDetail}"></strong>
 				    </div>
 				    <div class="row">
-				      <div class="col-md-3 ms-auto">.col-md-3 .ms-auto</div>
-				      <div class="col-md-2 ms-auto">.col-md-2 .ms-auto</div>
-				    </div>
-				    <div class="row">
-				      <div class="col-md-6 ms-auto">.col-md-6 .ms-auto</div>
-				    </div>
-				    <div class="row">
-				      <div class="col-sm-9">
-				        Level 1: .col-sm-9
-				        <div class="row">
-				          <div class="col-8 col-sm-6">
-				            Level 2: .col-8 .col-sm-6
-				          </div>
-				          <div class="col-4 col-sm-6">
-				            Level 2: .col-4 .col-sm-6
-				          </div>
-				        </div>
+				      <div class="col-md-auto">
+				      	<img src="" id="foto" class="rounded"/>
+				      	<figcaption class="figure-caption text-end" id="nombre"></figcaption>
 				      </div>
+				      <div class="col">
+				      	<h5>Descripciones:</h5>
+				      	<ul th:if="${detail != null}" aria-label="Descripciones:">
+					       <li th:each="item : ${detail.detail.descripciones}" th:text="${item}"></li>
+					    </ul>
+					    <h5>Evoluciones:</h5>
+				      	<ul th:if="${detail != null}" aria-label="Evoluciones:">
+					       <li th:each="item : ${detail.detail.evoluciones}" th:text="${item}"></li>
+					    </ul>
+					</div>
 				    </div>
 				  </div>
 	      </div>
@@ -171,9 +176,13 @@
 	<script type="text/javascript">
 
 		function changePageSize() {
-
+			
+		  $('#overlay').fadeIn();
+			  
 			$.post("/", $("#searchForm").serialize(), function (fragment) {
-
+				
+				$('#overlay').fadeOut();
+				
 				$("#pokemonsLista").replaceWith(fragment);
 
 			});
@@ -183,18 +192,19 @@
 		
 		function obtenerDetalle(referencia) {
 			
-			
-			
 			$('#exampleModal').modal('show');
 			url = $(referencia).attr('data-url');
 			foto = $(referencia).attr('data-foto');
-
-			console.log(url);
-			/*$.post("/", $("#detalleForm").serialize(), function (fragment) {
-
-				console.log(fragment);
-
-			});*/
+			nombre = $(referencia).attr('data-name');
+			
+			 $('#overlay').fadeIn();
+			$.post("/obtenerDetalle", {urlDetalle: url}, function (fragment) {
+				$('#overlay').fadeOut();
+				
+				$("#pokemonDetalle").replaceWith(fragment);
+				$("#foto").attr("src",foto);
+				$("#nombre").text(nombre);
+			});
 
 
 		}
