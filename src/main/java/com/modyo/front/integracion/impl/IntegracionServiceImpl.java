@@ -2,7 +2,6 @@ package com.modyo.front.integracion.impl;
 
 import java.time.Duration;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -10,10 +9,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.modyo.front.error.AplicacionExcepcion;
 import com.modyo.front.integracion.IntegracionService;
-import com.modyo.front.modelo.Pokemon;
+import com.modyo.front.modelo.PokemonDetalle;
 import com.modyo.front.modelo.Pokemons;
 import com.modyo.front.util.MensajeError;
 
@@ -33,6 +33,9 @@ public class IntegracionServiceImpl implements IntegracionService {
 
 	@Value("${rest.pokemon.operation.get}")
 	private String uriPokemon;
+	
+	@Value("${rest.pokemon.operation.getDetail}")
+	private String uriDetallePokemon;
 
 	private WebClient webClient;
 
@@ -45,25 +48,63 @@ public class IntegracionServiceImpl implements IntegracionService {
 	@Autowired
 	private MessageSource messageSource;
 
-	@Override
-	public Pokemons obtenerListadoPokemons(int pagina, int numeroElementosPorPagina) {
+	/**
+	 * {@link IntegracionService#obtenerListadoPokemons(int, int)}
+	 */
+	public Pokemons obtenerListadoPokemons(int pagina, int numeroElementosPorPagina) throws AplicacionExcepcion {
 
 		if (log.isDebugEnabled())
 			log.debug(">> Entrando a IntegracionServiceImpl.obtenerListadoPokemons() <<");
-
-		Pokemons pokemons = this.webClient.get().uri(uriBuilder -> 
-		uriBuilder.path(uriPokemon).queryParam("page", pagina).queryParam("size", numeroElementosPorPagina).build()).retrieve().bodyToMono(Pokemons.class)
-				.timeout(Duration.ofSeconds(5))
-				.onErrorMap(ReadTimeoutException.class,
-						ex -> new AplicacionExcepcion(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION))
-				.doOnError(WriteTimeoutException.class,
-						ex -> log.error(
-								messageSource.getMessage(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION.getLLaveMensaje(),
-										null, LocaleContextHolder.getLocale())))
-				.block();
+		
+		Pokemons pokemons =  null;
+		try {
+			pokemons = this.webClient.get().uri(uriBuilder -> 
+						uriBuilder.path(uriPokemon).queryParam("page", pagina).queryParam("size", numeroElementosPorPagina).build()).retrieve().bodyToMono(Pokemons.class)
+								.timeout(Duration.ofSeconds(5))
+								.onErrorMap(ReadTimeoutException.class,
+										ex -> new AplicacionExcepcion(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION))
+								.doOnError(WriteTimeoutException.class,
+										ex -> log.error(
+												messageSource.getMessage(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION.getLLaveMensaje(),
+														null, LocaleContextHolder.getLocale())))
+								.block();
+						
+		} catch (WebClientResponseException e) {
+			throw new AplicacionExcepcion(MensajeError.ERROR_NO_INFO_LISTADO_POKEMONS);
+		}
 		
 
 		return pokemons;
+	}
+
+	/**
+	 * {@link IntegracionService#obtenerDetallePokemon(String)}
+	 */
+	public PokemonDetalle obtenerDetallePokemon(String urlDetalle) throws AplicacionExcepcion {
+		if (log.isDebugEnabled())
+			log.debug(">> Entrando a IntegracionServiceImpl.obtenerDetallePokemon() <<");
+		
+		PokemonDetalle resultado =  null;
+		
+		try {
+				resultado = this.webClient.post().uri(uriBuilder -> 
+				uriBuilder.path(uriDetallePokemon).queryParam("url", urlDetalle).build()).retrieve().bodyToMono(PokemonDetalle.class)
+						.timeout(Duration.ofSeconds(5))
+						.onErrorMap(ReadTimeoutException.class,
+								ex -> new AplicacionExcepcion(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION))
+						.doOnError(WriteTimeoutException.class,
+								ex -> log.error(
+										messageSource.getMessage(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION.getLLaveMensaje(),
+												null, LocaleContextHolder.getLocale())))
+						.block();
+				
+				
+		} catch (WebClientResponseException e) {
+			throw new AplicacionExcepcion(MensajeError.ERROR_NO_INFO_DETALLE);
+		}
+		
+		return resultado;
+		
 	}
 
 }

@@ -25,7 +25,10 @@ public class Constantes {
      */
     public static final String PAGE_SIZE = "pageSize";
     
-    
+    /**
+     * Constante para los los mensajes de error
+     */
+    public static final String MESSAGE_ERROR = "error";
     
     
 
