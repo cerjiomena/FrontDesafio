@@ -117,17 +117,17 @@ public class PokemonController {
 	 * Metodo utilizado para obtener el detalle del pokemon
 	 * @param request peticion
 	 * @param model 
-	 * @param url direccion donde se encuentra el detalle
+	 * @param id del pokemon a detalle
 	 * @return fragmento de html con la información deseada
 	 */
 	@PostMapping("/obtenerDetalle")
-	public String obtenerDetallePokemon(WebRequest request, Model model, @RequestParam("urlDetalle") Optional<String> url) {
+	public String obtenerDetallePokemon(WebRequest request, Model model, @RequestParam("id") Optional<String> id) {
 		
 		PokemonDetalle detalle;
 		Locale local = request.getLocale();
 		
 		try {
-			detalle = pokemonService.obtenerDetallePokemon(url.get());
+			detalle = pokemonService.obtenerDetallePokemon(id.get());
 			if(detalle != null) {
 				if( detalle.getDetail() != null) {
 					model.addAttribute(Constantes.DETAIL, detalle);

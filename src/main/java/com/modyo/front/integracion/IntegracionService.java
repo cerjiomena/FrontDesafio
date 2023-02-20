@@ -17,10 +17,10 @@ public interface IntegracionService {
 
 	/**
 	 * Metodo utilizado para obtener el detalle del pokemon
-	 * @param urlDetalle direccion del detalle
+	 * @param id identificador del pokemon para obtener el detalle
 	 * @return Objeto mapeado con los propiedades de la respuesta del json
 	 */
-	PokemonDetalle obtenerDetallePokemon(String urlDetalle) throws AplicacionExcepcion;
+	PokemonDetalle obtenerDetallePokemon(String id) throws AplicacionExcepcion;
 
 
 }

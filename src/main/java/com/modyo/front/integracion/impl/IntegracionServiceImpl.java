@@ -80,7 +80,7 @@ public class IntegracionServiceImpl implements IntegracionService {
 	/**
 	 * {@link IntegracionService#obtenerDetallePokemon(String)}
 	 */
-	public PokemonDetalle obtenerDetallePokemon(String urlDetalle) throws AplicacionExcepcion {
+	public PokemonDetalle obtenerDetallePokemon(String id) throws AplicacionExcepcion {
 		if (log.isDebugEnabled())
 			log.debug(">> Entrando a IntegracionServiceImpl.obtenerDetallePokemon() <<");
 		
@@ -88,7 +88,7 @@ public class IntegracionServiceImpl implements IntegracionService {
 		
 		try {
 				resultado = this.webClient.post().uri(uriBuilder -> 
-				uriBuilder.path(uriDetallePokemon).queryParam("url", urlDetalle).build()).retrieve().bodyToMono(PokemonDetalle.class)
+				uriBuilder.path(uriDetallePokemon).queryParam("id", id).build()).retrieve().bodyToMono(PokemonDetalle.class)
 						.timeout(Duration.ofSeconds(5))
 						.onErrorMap(ReadTimeoutException.class,
 								ex -> new AplicacionExcepcion(MensajeError.ERROR_TIEMPO_ESPERA_OPERACION))

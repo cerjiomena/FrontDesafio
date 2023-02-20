@@ -10,5 +10,5 @@ public class Pokemon {
 	private String tipo;
 	private String peso;
 	private String habilidades;
-	private String urlDetalle;
+	private String id;
 }

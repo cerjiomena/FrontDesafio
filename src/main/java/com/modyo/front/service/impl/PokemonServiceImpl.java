@@ -26,9 +26,9 @@ public class PokemonServiceImpl implements PokemonService {
 	/**
 	 * {@link PokemonService#obtenerDetallePokemon(String)}
 	 */
-	public PokemonDetalle obtenerDetallePokemon(String urlDetalle) throws AplicacionExcepcion {
+	public PokemonDetalle obtenerDetallePokemon(String id) throws AplicacionExcepcion {
 		
-		return integracionService.obtenerDetallePokemon(urlDetalle);
+		return integracionService.obtenerDetallePokemon(id);
 		
 	}
 

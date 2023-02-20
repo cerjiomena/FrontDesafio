@@ -75,7 +75,7 @@
 						<td th:text="${pokemon.habilidades}"></td>
 						<td><img th:src="${pokemon.foto}" /></td>
 						<td>
-							<a th:data-url="${pokemon.urlDetalle}" th:data-foto="${pokemon.foto}" th:data-name="${pokemon.nombre}" th:onclick="obtenerDetalle(this)" style="cursor: pointer;">Ver detalle</a>
+							<a th:data-id="${pokemon.id}" th:data-foto="${pokemon.foto}" th:data-name="${pokemon.nombre}" th:onclick="obtenerDetalle(this)" style="cursor: pointer;">Ver detalle</a>
 						</td>
 					</tr>
 				</tbody>
@@ -193,12 +193,12 @@
 		function obtenerDetalle(referencia) {
 			
 			$('#exampleModal').modal('show');
-			url = $(referencia).attr('data-url');
+			id = $(referencia).attr('data-id');
 			foto = $(referencia).attr('data-foto');
 			nombre = $(referencia).attr('data-name');
 			
 			 $('#overlay').fadeIn();
-			$.post("/obtenerDetalle", {urlDetalle: url}, function (fragment) {
+			$.post("/obtenerDetalle", {'id': id}, function (fragment) {
 				$('#overlay').fadeOut();
 				
 				$("#pokemonDetalle").replaceWith(fragment);

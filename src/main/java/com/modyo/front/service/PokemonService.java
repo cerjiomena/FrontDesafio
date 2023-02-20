@@ -15,5 +15,11 @@ public interface PokemonService {
 	 */
 	Pokemons obtenerPaginaPokemons(int pagina, int numeroElementosPorPagina) throws AplicacionExcepcion;
 	
-	PokemonDetalle obtenerDetallePokemon(String urlDetalle) throws AplicacionExcepcion;
+	/**
+	 * Metodo para obtener el detalle del pokemon, tanto descripciones como evoluciones
+	 * @param id identificador del pokemon
+	 * @return Objeto de transporte con el detalle del pokemon
+	 * @throws AplicacionExcepcion
+	 */
+	PokemonDetalle obtenerDetallePokemon(String id) throws AplicacionExcepcion;
 }
